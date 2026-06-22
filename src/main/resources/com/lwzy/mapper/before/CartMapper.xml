@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwzy.mapper.before.CartMapper">
+    <select id="isExist" resultType="Cart">
+        select *
+        from carttable
+        where busertable_id=#{busertable_id}
+        and goodstable_id=#{goodstable_id}
+    </select>
+
+    <insert id="add">
+        insert into carttable
+        values(null,#{busertable_id},#{goodstable_id},#{shoppingnum})
+    </insert>
+
+    <update id="update">
+        update carttable
+        set shoppingnum=shoppingnum+#{shoppingnum}
+        where busertable_id=#{busertable_id}
+        and goodstable_id=#{goodstable_id}
+    </update>
+
+    <select id="select" resultType="map">
+        select g.id gid,g.gname,g.grprice,g.gpicture,
+               c.id cid,c.shoppingnum,g.grprice*c.shoppingnum smallsum
+        from carttable c,goodstable g
+        where c.goodstable_id=g.id
+        and busertable_id=#{busertable_id}
+    </select>
+
+    <delete id="delete">
+        delete from carttable
+        where id=#{id}
+    </delete>
+
+    <delete id="clear">
+        delete from carttable
+        where busertable_id=#{busertable_id}
+    </delete>
+
+    <!--收藏-->
+    <select id="selectFocus" resultType="Map">
+        select g.id,g.gname,g.goprice,g.grprice,g.gpicture
+        from goodstable g,focustable f
+        where f.goodstable_id = g.id
+        and busertable_id = #{userId}
+    </select>
+
+</mapper>

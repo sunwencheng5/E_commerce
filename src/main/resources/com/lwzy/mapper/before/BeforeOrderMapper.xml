@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwzy.mapper.before.BeforeOrderMapper">
+    <resultMap id="OrderMap" type="Order">
+        <id property="id" column="id"/>
+        <result property="amount" column="amount"/>
+        <result property="status" column="status"/>
+        <result property="orderdate" column="orderdate"/>
+        <association property="user" columnPrefix="user_"
+                     resultMap="com.lwzy.mapper.before.BuserMapper.userMap"/>
+    </resultMap>
+
+    <!-- 添加一个订单，并获得新增的这条数据的id主键值回填给Order对象-->
+    <insert id="insertOrder" keyProperty="id" useGeneratedKeys="true">
+        insert into orderbasetable
+        values (null,#{user.id},#{amount},#{status},now())
+    </insert>
+
+    <!--添加订单详情-->
+    <insert id="insertOrderDetail">
+        insert into orderdetail(orderbasetable_id,goodstable_id,shoppingnum)
+        select #{id},goodstable_id,shoppingnum
+        from carttable
+        where busertable_id=#{user.id}
+    </insert>
+
+    <!--更新商品库存-->
+    <update id="updateStore">
+        update goodstable g
+        inner join (select goodstable_id,shoppingnum
+                    from carttable
+                    where busertable_id=#{user.id}) ct
+        set g.gstore=g.gstore-ct.shoppingnum
+        where g.id=ct.goodstable_id
+    </update>
+
+    <update id="pay">
+        update orderbasetable
+        set status=1
+        where id=#{id}
+    </update>
+
+    <!--我的订单-->
+    <select id="select" resultType="Order">
+        select id,amount,status,DATE_FORMAT(orderdate,'%Y-%m-%d %T') orderdate
+        from orderbasetable
+        where busertable_id=#{userId}
+    </select>
+    <!--精准查询-->
+    <select id="selectOrderDetail" resultMap="Map">
+        select g.id,g.gpicture,g.gname,g.grprice,o.shoppingnum
+        from orderdetail o,goodstable g
+        where o.goodstable_id=g.id
+        and
+        orderbasetable_id=#{orderId}
+    </select>
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwzy.mapper.admin.GoodsMapper">
+    <!--定义goodstable和实体类Goods的映射关系-->
+    <resultMap id="goodsMap" type="Goods">
+        <id property="id" column="id"/>
+        <result property="gname" column="gname"/>
+        <result property="goprice" column="goprice"/>
+        <result property="grprice" column="grprice"/>
+        <result property="gstore" column="gstore"/>
+        <result property="gpicture" column="gpicture"/>
+        <result property="isshow" column="isshow"/>
+        <association property="type" columnPrefix="type_"
+                     resultMap="com.lwzy.mapper.admin.GoodsTypeMapper.GoodsTypeMap"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into goodstable
+        values(null,#{gname},#{goprice},#{grprice},#{gstore},#{gpicture},#{type.id},#{isshow})
+    </insert>
+    <update id="update">
+        update goodstable
+        set gname=#{gname},goprice=#{goprice},grprice=#{grprice},gstore=#{gstore},gpicture=#{gpicture},
+            goodstype_id=#{type.id},isshow=#{isshow}
+        where id=#{id}
+    </update>
+    <select id="selectCart" resultType="map">
+        select * from carttable where goodstable_id=#{id}
+    </select>
+    <select id="selectFocus" resultType="map">
+        select * from focustable where goodstable_id=#{id}
+    </select>
+    <select id="selectOrder" resultType="map">
+        select * from orderdetail where goodstable_id=#{id}
+    </select>
+    <delete id="delete">
+        delete from goodstable
+        where id=#{id}
+    </delete>
+    <select id="select" resultMap="goodsMap">
+        select g.*,gt.id type_id,gt.typename type_typename
+        from goodstable g,goodstype gt
+        where g.goodstype_id=gt.id
+        order by g.id desc
+    </select>
+    <select id="selectByPage" resultMap="goodsMap">
+        select g.*,gt.id type_id,gt.typename type_typename
+        from goodstable g,goodstype gt
+        where g.goodstype_id=gt.id
+        order by g.id desc
+        limit #{startIndex},#{pageSize}
+    </select>
+    <select id="selectAGoods" resultMap="goodsMap">
+        select g.*,gt.id type_id,gt.typename type_typename
+        from goodstable g,goodstype gt
+        where g.goodstype_id=gt.id
+        and g.id=#{id}
+    </select>
+    <select id="selectGoodsByTypeID" resultMap="goodsMap">
+        select g.*
+        from goodstable g
+        where g.goodstype_id=#{id}
+    </select>
+</mapper>

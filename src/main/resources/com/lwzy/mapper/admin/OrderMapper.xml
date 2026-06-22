@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwzy.mapper.admin.OrderMapper">
+    <!--定义orderbasetable和实体类Order的映射关系-->
+    <resultMap id="OrderMap" type="Order">
+        <id property="id" column="id"/>
+        <result property="amount" column="amount"/>
+        <result property="status" column="status"/>
+        <result property="orderdate" column="orderdate"/>
+        <association property="user" columnPrefix="user_"
+                     resultMap="com.lwzy.mapper.before.BuserMapper.userMap"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="OrderMap">
+        select o.*,b.id user_id,b.bemail user_bemail,b.bpwd user_bpwd
+        from orderbasetable o,busertable b
+        where o.busertable_id=b.id
+    </select>
+
+    <select id="selectByPage" resultMap="OrderMap">
+        select o.*,b.id user_id,b.bemail user_bemail,b.bpwd user_bpwd
+        from orderbasetable o,busertable b
+        where o.busertable_id=b.id
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="selectByMonth" resultType="map">
+        select sum(amount) totalamount, DATE_FORMAT(orderdate,'%Y-%m')months
+        from orderbasetable
+        where status=1
+          and orderdate>DATE_SUB(CURDATE(),INTERVAL 1 year)
+        group by months
+    </select>
+
+    <select id="selectByType" resultType="map">
+        select sum(amount) totalamount,gt.typename
+        from orderbasetable o,orderdetail od,goodstable g,goodstype gt
+        where o.id=od.orderbasetable_id
+          and od.goodstable_id=g.id
+          and g.goodstype_id=gt.id
+          and status=1
+          and orderdate>DATE_SUB(CURDATE(),INTERVAL 1 year)
+        group by gt.typename
+    </select>
+</mapper>

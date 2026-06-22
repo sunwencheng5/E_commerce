@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwzy.mapper.admin.AdminMapper">
+    <!--定义ausertable和实体类Admin的映射关系-->
+    <resultMap id="adminMap" type="Admin">
+        <id property="id" column="id"/>
+        <result property="aname" column="aname"/>
+        <result property="apwd" column="apwd"/>
+    </resultMap>
+
+    <select id="login" resultMap="adminMap">
+        select * from ausertable
+        where aname=#{aname} and apwd=#{apwd}
+    </select>
+</mapper>

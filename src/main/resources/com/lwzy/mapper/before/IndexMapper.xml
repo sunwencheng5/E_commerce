@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lwzy.mapper.before.IndexMapper">
+   <select id="selectAdviseGoods" resultMap="com.lwzy.mapper.admin.GoodsMapper.goodsMap">
+        select *
+        from goodstable
+        where isshow=1
+        order by id desc
+   </select>
+
+    <select id="selectLatestGoods" resultMap="com.lwzy.mapper.admin.GoodsMapper.goodsMap">
+        select *
+        from goodstable
+        where isshow=0
+        <if test="typeId!=0">
+            and goodstype_id =#{typeId}
+        </if>
+        order by id desc
+    </select>
+
+    <select id="selectGoodsByKey" resultMap="com.lwzy.mapper.admin.GoodsMapper.goodsMap">
+        select *
+        from goodstable
+        where isshow=0
+        and gname like concat('%',#{name},'%')
+        order by id desc
+    </select>
+</mapper>
