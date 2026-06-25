@@ -16,10 +16,13 @@ markdown
 ### 1. 克隆项目
 
 git clone https://github.com/sunwencheng5/E_commerce.git
+
 cd E_commerce
 2. 导入数据库
 bash
+
 # 执行 SQL 目录下的建表脚本
+
 mysql -u root -p < SQL/xxx.sql
 3. 修改配置文件
 编辑 src/main/resources/application.yml 或 application.properties，配置数据库连接信息：
@@ -30,8 +33,10 @@ spring:
     url: jdbc:mysql://localhost:3306/你的数据库名?useSSL=false&serverTimezone=UTC
     username: 你的用户名
     password: 你的密码
+    
 4. 启动项目
 bash
+
 # 使用 Maven Wrapper 启动
 ./mvnw spring-boot:run
 
