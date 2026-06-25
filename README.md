@@ -35,6 +35,7 @@ spring:
     password: 你的密码
     
 4. 启动项目
+
 bash
 
 # 使用 Maven Wrapper 启动
