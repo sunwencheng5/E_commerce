@@ -43,8 +43,11 @@ bash
 
 # 或打包后运行
 ./mvnw clean package
+
 java -jar target/E_commerce-*.jar
+
 5. 测试接口
+
 项目启动后默认端口为 8080，可使用 Postman 或 curl 工具进行接口测试。
 
 API 接口概览
@@ -71,14 +74,3 @@ License
 text
 
 ---
-
-## 使用方法
-
-1. 将上述内容完整复制
-2. 在项目根目录下创建 `README.md` 文件
-3. 提交并推送：
-
-```bash
-git add README.md
-git commit -m "docs: 添加 README 文档"
-git push origin master
