@@ -28,7 +28,7 @@ bash
 mysql -u root -p < SQL/xxx.sql
 
 3. 修改配置文件
-4. 
+
 编辑 src/main/resources/application.yml 或 application.properties，配置数据库连接信息：
 
 yaml
