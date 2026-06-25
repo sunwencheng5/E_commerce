@@ -18,13 +18,17 @@ markdown
 git clone https://github.com/sunwencheng5/E_commerce.git
 
 cd E_commerce
+
 2. 导入数据库
+
 bash
 
 # 执行 SQL 目录下的建表脚本
 
 mysql -u root -p < SQL/xxx.sql
+
 3. 修改配置文件
+4. 
 编辑 src/main/resources/application.yml 或 application.properties，配置数据库连接信息：
 
 yaml
