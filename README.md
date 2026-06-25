@@ -15,7 +15,6 @@ markdown
 
 ### 1. 克隆项目
 
-```bash
 git clone https://github.com/sunwencheng5/E_commerce.git
 cd E_commerce
 2. 导入数据库
